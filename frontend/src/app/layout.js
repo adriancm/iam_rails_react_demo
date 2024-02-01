@@ -1,10 +1,8 @@
-import { Inter } from "next/font/google";
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
-
-const inter = Inter({ subsets: ["latin"] });
+import TopBar from "@src/app/components/TopBar";
 
 export const metadata = {
     title: "IAM Demo",
@@ -18,6 +16,7 @@ export default function RootLayout({ children }) {
                 <AppRouterCacheProvider>
                     <ThemeProvider theme={theme}>
                         <UserProvider>
+                            <TopBar />
                             {children}
                         </UserProvider>
                     </ThemeProvider>

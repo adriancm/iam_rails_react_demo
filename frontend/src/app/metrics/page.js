@@ -1,10 +1,18 @@
-import TopBar from "@src/app/components/TopBar";
+import SymmetricTimeline from "@src/app/components/SymmetricTimeline";
+import { Grid } from '@mui/material';
+
 
 const Metrics = () => {
     return (
-        <>
-            <TopBar />
-        </>
+        <Grid container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+        >
+            <Grid item>
+                <SymmetricTimeline />
+            </Grid>
+        </Grid>
     );
 }
 
