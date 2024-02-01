@@ -1,6 +1,4 @@
-'use client'
-import Image from "next/image";
-import TopBar from "@/app/components/TopBar";
+import TopBar from "@src/app/components/TopBar";
 
 const Metrics = () => {
     return (
