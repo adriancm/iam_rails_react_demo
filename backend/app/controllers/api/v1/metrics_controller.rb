@@ -1,4 +1,4 @@
-class Api::V1::MetricsController < Api::V1::PrivateApiController
+class Api::V1::MetricsController < Api::PrivateApiController
 
   before_action :set_metric, only: %i[ show update destroy ]
 

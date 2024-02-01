@@ -1,3 +1,3 @@
-class Api::V1::PrivateApiController < ApplicationController
-  include Secured
+class Api::PrivateApiController < ApplicationController
+  before_action :authorize
 end

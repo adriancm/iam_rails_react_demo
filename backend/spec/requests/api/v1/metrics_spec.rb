@@ -12,7 +12,7 @@ require 'rails_helper'
 # of tools you can use to make these specs even more expressive, but we're
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
-RSpec.describe "/metrics", type: :request do
+RSpec.describe "/api/v1/metrics", type: :request do
   # This should return the minimal set of attributes required to create a valid
   # Metric. As you add validations to Metric, be sure to
   # adjust the attributes here as well.
@@ -35,7 +35,7 @@ RSpec.describe "/metrics", type: :request do
   describe "GET /index" do
     it "renders a successful response" do
       Metric.create! valid_attributes
-      get metrics_url, headers: valid_headers, as: :json
+      get api_v1_metrics_url, headers: valid_headers, as: :json
       expect(response).to be_successful
     end
   end
@@ -52,13 +52,13 @@ RSpec.describe "/metrics", type: :request do
     context "with valid parameters" do
       it "creates a new Metric" do
         expect {
-          post metrics_url,
+          post api_v1_metrics_url,
                params: { metric: valid_attributes }, headers: valid_headers, as: :json
         }.to change(Metric, :count).by(1)
       end
 
       it "renders a JSON response with the new metric" do
-        post metrics_url,
+        post api_v1_metrics_url,
              params: { metric: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
         expect(response.content_type).to match(a_string_including("application/json"))
@@ -68,13 +68,13 @@ RSpec.describe "/metrics", type: :request do
     context "with invalid parameters" do
       it "does not create a new Metric" do
         expect {
-          post metrics_url,
+          post api_v1_metrics_url,
                params: { metric: invalid_attributes }, as: :json
         }.to change(Metric, :count).by(0)
       end
 
       it "renders a JSON response with errors for the new metric" do
-        post metrics_url,
+        post api_v1_metrics_url,
              params: { metric: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
@@ -90,7 +90,7 @@ RSpec.describe "/metrics", type: :request do
 
       it "updates the requested metric" do
         metric = Metric.create! valid_attributes
-        patch metric_url(metric),
+        patch api_v1_metric_url(metric),
               params: { metric: new_attributes }, headers: valid_headers, as: :json
         metric.reload
         skip("Add assertions for updated state")
@@ -98,7 +98,7 @@ RSpec.describe "/metrics", type: :request do
 
       it "renders a JSON response with the metric" do
         metric = Metric.create! valid_attributes
-        patch metric_url(metric),
+        patch api_v1_metric_url(metric),
               params: { metric: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including("application/json"))
@@ -108,7 +108,7 @@ RSpec.describe "/metrics", type: :request do
     context "with invalid parameters" do
       it "renders a JSON response with errors for the metric" do
         metric = Metric.create! valid_attributes
-        patch metric_url(metric),
+        patch api_v1_metric_url(metric),
               params: { metric: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
@@ -120,7 +120,7 @@ RSpec.describe "/metrics", type: :request do
     it "destroys the requested metric" do
       metric = Metric.create! valid_attributes
       expect {
-        delete metric_url(metric), headers: valid_headers, as: :json
+        delete api_v1_metric_url(metric), headers: valid_headers, as: :json
       }.to change(Metric, :count).by(-1)
     end
   end
