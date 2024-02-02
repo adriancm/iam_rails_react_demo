@@ -1,8 +1,16 @@
+'use client'
 import SymmetricTimeline from "@src/app/components/SymmetricTimeline";
 import { Grid } from '@mui/material';
+import {useEffect, useState} from "react";
 
+const MetricsPage = (props) => {
 
-const Metrics = () => {
+    const [metrics, setMetrics] = useState([]);
+
+    useEffect(() => {
+        fetch('/api/metrics').then(result => console.log(result));
+    });
+
     return (
         <Grid container
               direction="row"
@@ -16,4 +24,4 @@ const Metrics = () => {
     );
 }
 
-export default Metrics;
+export default MetricsPage;
