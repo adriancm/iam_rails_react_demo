@@ -10,8 +10,16 @@ default: &default
   timeout: 5000
 
 development:
-  <<: *default
-  database: storage/development.sqlite3
+  # Default DB it could be use for high-level data for example Organizations table or similar purposes.
+  # For that case it would be nice to have independent migrations
+  # E.g.: migration_paths: db/primary_migrations
+  primary:
+    <<: *default
+    database: storage/development.sqlite3
+
+  org_HDy4ilnBiaCVwQHh:
+    <<: *default
+    database: storage/org_HDy4ilnBiaCVwQHh.sqlite3
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

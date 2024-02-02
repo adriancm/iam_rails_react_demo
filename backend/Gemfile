@@ -36,7 +36,6 @@ gem "bootsnap", require: false
 gem 'rack-cors'
 gem 'jwt'
 gem 'pry-rails'
-gem 'jsonapi-rails'
 gem 'dotenv', groups: [:development, :test]
 
 group :development, :test do

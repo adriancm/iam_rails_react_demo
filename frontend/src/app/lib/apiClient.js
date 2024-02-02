@@ -1,3 +1,4 @@
+import { getSession } from '@auth0/nextjs-auth0';
 
 export const getAccessToken = async () => {
     return fetch(process.env.AUTH0_TOKEN_ENDPOINT, {
@@ -12,16 +13,19 @@ export const getAccessToken = async () => {
     })
 }
 
-const apiClient = async ({ method, path, token, data = {} }) => {
+const apiClient = async ({ method, path, data = {} }) => {
 
     const base_url = process.env.BASE_API_URL || 'http://localhost:3000/api/v1';
     const response = await getAccessToken();
     const { access_token } = await response.json();
+    const { user } = await getSession();
+
 
     return fetch(`${base_url}${path}`, {
         method,
         headers: new Headers({
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${access_token}`,
+            'Tenant-ID': user?.org_id
         }),
         ...(method.toUpperCase() === 'GET' ? {} : { body: JSON.stringify(data) })
     });
