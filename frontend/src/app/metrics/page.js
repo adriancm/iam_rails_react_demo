@@ -3,7 +3,7 @@ import SymmetricTimeline from "@src/app/components/SymmetricTimeline";
 import { Grid, Button, ButtonGroup } from '@mui/material';
 import {useEffect, useState} from "react";
 import {getAverageMetrics} from "@src/app/metrics/actions";
-import { PER_MINUTE, TIME_PERIODS } from "@src/app/constants";
+import {PER_DAY, PER_MINUTE, TIME_PERIODS} from "@src/app/constants";
 
 const MetricsPage = (props) => {
 
@@ -11,14 +11,13 @@ const MetricsPage = (props) => {
     const [timePeriod, setTimePeriod] = useState(PER_MINUTE);
 
     const getMetrics = async () => {
-        getAverageMetrics({ timePeriod }).then((res)=> { console.log(res); setMetrics(res) });
+        getAverageMetrics({ timePeriod }).then(setMetrics);
     }
 
     const getTimestamp = (item) => {
         const date = new Date(item.period_timestamp);
         return date.toLocaleString('es-ES', {
-            hour: '2-digit',
-            minute: '2-digit',
+            ...(timePeriod !== PER_DAY && {hour: '2-digit', minute: '2-digit'}),
             day: '2-digit',
             month: '2-digit',
             year: '2-digit'

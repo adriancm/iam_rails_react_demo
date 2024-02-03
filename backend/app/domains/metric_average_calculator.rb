@@ -2,7 +2,7 @@
 
     TIME_PERIODS = {
       per_minute: '%Y-%m-%d %H:%M',
-      per_hour: '%Y-%m-%d %H',
+      per_hour: '%Y-%m-%d %H:00',
       per_day: '%Y-%m-%d'
     }.freeze
 
@@ -17,7 +17,10 @@
     end
 
     def query
-      Metric.select("round(avg(value), 2) avg, strftime('#{time_format}', timestamp) period_timestamp").group('period_timestamp')
+      Metric
+        .select("round(avg(value), 2) avg, strftime('#{time_format}', timestamp) period_timestamp")
+        .group('period_timestamp')
+        .order('period_timestamp desc')
     end
 
     def time_format

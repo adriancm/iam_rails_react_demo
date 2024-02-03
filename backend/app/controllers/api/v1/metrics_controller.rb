@@ -2,6 +2,7 @@ class Api::V1::MetricsController < Api::PrivateApiController
 
   before_action :set_metric, only: %i[ show update destroy ]
   before_action :set_page, only: %i[ index average ]
+  before_action
 
   # GET /metrics
   def index
@@ -12,7 +13,7 @@ class Api::V1::MetricsController < Api::PrivateApiController
   end
 
   def average
-    @metrics = ::MetricAverageCalculator.call(period: @time_period).page(@page)
+    @metrics = ::MetricAverageCalculator.call(period: time_period).page(@page)
 
     # TODO: Serializers are more powerful (e.g. jsonapi, active_model_serializers, etc.)
     render json: @metrics
@@ -58,8 +59,8 @@ class Api::V1::MetricsController < Api::PrivateApiController
     @page = params[:page]
   end
 
-  def set_time_period
-    @time_period = params[:timePeriod]
+  def time_period
+    params[:time_period]
   end
 
   # Only allow a list of trusted parameters through.

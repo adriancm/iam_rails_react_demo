@@ -4,8 +4,8 @@ const base_path = 'metrics';
 const metricService = {
     list: async ({ page }) =>
         request({ method: 'get', path: base_path, page}),
-    average: async ({ page = 1, params }) =>
-        request({ method: 'get', path: `${base_path}/average`, params, page }),
+    average: async ({ page = 1, query }) =>
+        request({ method: 'get', path: `${base_path}/average`, query, page }),
     show: async (id) =>
         request({ method: 'get', path: `${base_path}/${id}`}),
     create: async (metricData) =>

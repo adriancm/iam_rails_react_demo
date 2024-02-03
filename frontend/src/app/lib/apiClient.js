@@ -1,5 +1,6 @@
 import { getSession } from '@auth0/nextjs-auth0';
 import { DEFAULT_API_URL } from "@src/app/constants";
+import {underscoreObject} from "@src/app/utils";
 
 export const getAccessToken = async () => {
     return fetch(process.env.AUTH0_TOKEN_ENDPOINT, {
@@ -30,9 +31,8 @@ const apiClient = async ({ method, path, page = 1, query, data = {} }) => {
         if(page)
             fullPath = getPagedPath(fullPath);
         if(query)
-            fullPath = fullPath + new URLSearchParams(query).toString();
+            fullPath = fullPath + '?' + new URLSearchParams(underscoreObject(query)).toString();
 
-        console.log('TESTSTIOO-===', base_url, path, fullPath)
         return fullPath;
     }
 
