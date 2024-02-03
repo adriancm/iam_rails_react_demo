@@ -13,14 +13,14 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <body>
-                <AppRouterCacheProvider>
-                    <ThemeProvider theme={theme}>
-                        <UserProvider>
+                <UserProvider>
+                    <AppRouterCacheProvider>
+                        <ThemeProvider theme={theme}>
                             <TopBar />
                             {children}
-                        </UserProvider>
-                    </ThemeProvider>
-                </AppRouterCacheProvider>
+                        </ThemeProvider>
+                    </AppRouterCacheProvider>
+                </UserProvider>
             </body>
         </html>
     );

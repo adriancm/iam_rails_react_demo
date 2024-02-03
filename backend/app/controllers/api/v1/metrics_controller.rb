@@ -1,11 +1,20 @@
 class Api::V1::MetricsController < Api::PrivateApiController
 
   before_action :set_metric, only: %i[ show update destroy ]
+  before_action :set_page, only: %i[ index average ]
 
   # GET /metrics
   def index
-    @metrics = Metric.all
+    @metrics = Metric.page(@page)
 
+    # TODO: Serializers are more powerful (e.g. jsonapi, active_model_serializers, etc.)
+    render json: @metrics
+  end
+
+  def average
+    @metrics = ::MetricAverageCalculator.call(period: @time_period).page(@page)
+
+    # TODO: Serializers are more powerful (e.g. jsonapi, active_model_serializers, etc.)
     render json: @metrics
   end
 
@@ -40,13 +49,21 @@ class Api::V1::MetricsController < Api::PrivateApiController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_metric
-      @metric = Metric.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_metric
+    @metric = Metric.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def metric_params
-      params.require(:metric).permit(:name, :value, :timestamp)
-    end
+  def set_page
+    @page = params[:page]
+  end
+
+  def set_time_period
+    @time_period = params[:timePeriod]
+  end
+
+  # Only allow a list of trusted parameters through.
+  def metric_params
+    params.require(:metric).permit(:name, :value, :timestamp)
+  end
 end

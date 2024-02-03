@@ -16,12 +16,20 @@ RSpec.describe "/api/v1/metrics", type: :request do
   # This should return the minimal set of attributes required to create a valid
   # Metric. As you add validations to Metric, be sure to
   # adjust the attributes here as well.
+  before(:each) do
+    skip("Pending mock or skip authentication flow")
+  end
+
+  let(:metric_list) {
+    create_list(:metric, 3)
+  }
+
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    { value: 12.3, timestamp: DateTime.now, name: 'Name' }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { value: 12.3, name: 'Other' }
   }
 
   # This should return the minimal set of values that should be in the headers
@@ -31,6 +39,14 @@ RSpec.describe "/api/v1/metrics", type: :request do
   let(:valid_headers) {
     {}
   }
+
+  describe "GET /index" do
+    it "renders a successful response" do
+      Metric.create! valid_attributes
+      get api_v1_metrics_url, headers: valid_headers, as: :json
+      expect(response).to be_successful
+    end
+  end
 
   describe "GET /index" do
     it "renders a successful response" do

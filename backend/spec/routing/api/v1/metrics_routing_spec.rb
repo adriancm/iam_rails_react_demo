@@ -6,6 +6,10 @@ RSpec.describe Api::V1::MetricsController, type: :routing do
       expect(get: "/api/v1/metrics").to route_to("api/v1/metrics#index")
     end
 
+    it "routes to #average" do
+      expect(get: "/api/v1/metrics/average").to route_to("api/v1/metrics#average")
+    end
+
     it "routes to #show" do
       expect(get: "/api/v1/metrics/1").to route_to("api/v1/metrics#show", id: "1")
     end

@@ -8,9 +8,16 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "api/v1/metrics#index"
 
+  concern :paginatable do
+    get '(page/:page)', action: :index, on: :collection, as: :paginated
+    get 'average/page/:page', action: :average, on: :collection, as: :average_paginated
+  end
+
   namespace :api do
     namespace :v1 do
-      resources :metrics
+      resources :metrics, concerns: :paginatable do
+        get :average, on: :collection
+      end
     end
   end
 end

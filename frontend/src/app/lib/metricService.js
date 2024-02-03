@@ -1,20 +1,19 @@
 import request from './apiClient';
+const base_path = 'metrics';
 
-const metricService =  () => {
-
-    const path = '/metrics';
-
-    const list = async () => request({ method: 'get', path: path});
-
-    const show = async (id) => request({ method: 'get', path: `${path}/${id}`});
-
-    const create = async (metricData) => request({ method: 'post', path: path, data: metricData});
-
-    const update = async (metricData) => request({ method: 'patch', path: `${path}/${id}`, data: metricData});
-
-    const destroy = async (id) => request({ method: 'delete', path: `${path}/${id}`});
-
-    return { list, show, create, update, destroy }
+const metricService = {
+    list: async ({ page }) =>
+        request({ method: 'get', path: base_path, page}),
+    average: async ({ page = 1, params }) =>
+        request({ method: 'get', path: `${base_path}/average`, params, page }),
+    show: async (id) =>
+        request({ method: 'get', path: `${base_path}/${id}`}),
+    create: async (metricData) =>
+        request({ method: 'post', path: base_path, data: metricData}),
+    update: async (id, metricData) =>
+        request({ method: 'patch', path: `${base_path}/${id}`, data: metricData}),
+    destroy: async (id) =>
+        request({ method: 'delete', path: `${base_path}/${id}`}),
 }
 
 export default metricService;

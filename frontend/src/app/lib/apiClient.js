@@ -1,4 +1,5 @@
 import { getSession } from '@auth0/nextjs-auth0';
+import { DEFAULT_API_URL } from "@src/app/constants";
 
 export const getAccessToken = async () => {
     return fetch(process.env.AUTH0_TOKEN_ENDPOINT, {
@@ -13,15 +14,29 @@ export const getAccessToken = async () => {
     })
 }
 
-const apiClient = async ({ method, path, data = {} }) => {
+const apiClient = async ({ method, path, page = 1, query, data = {} }) => {
 
-    const base_url = process.env.BASE_API_URL || 'http://localhost:3000/api/v1';
+    const base_url = process.env.BASE_API_URL || DEFAULT_API_URL;
     const response = await getAccessToken();
     const { access_token } = await response.json();
     const { user } = await getSession();
 
+    const getPagedPath = (fullPath) => {
+        return `${fullPath}/page/${page}`
+    }
 
-    return fetch(`${base_url}${path}`, {
+    const getFullPath = () => {
+        let fullPath = `${base_url}/${path}`;
+        if(page)
+            fullPath = getPagedPath(fullPath);
+        if(query)
+            fullPath = fullPath + new URLSearchParams(query).toString();
+
+        console.log('TESTSTIOO-===', base_url, path, fullPath)
+        return fullPath;
+    }
+
+    return fetch(getFullPath(), {
         method,
         headers: new Headers({
             'Authorization': `Bearer ${access_token}`,

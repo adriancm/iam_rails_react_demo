@@ -17,9 +17,18 @@ development:
     <<: *default
     database: storage/development.sqlite3
 
+  # TODO: This names are too ugly, it would be nice to have some kind of map ord_id <> org_slug to be more descriptive
   org_HDy4ilnBiaCVwQHh:
     <<: *default
     database: storage/org_HDy4ilnBiaCVwQHh.sqlite3
+
+  org_SYfDaOa0u9rHKm6m:
+    <<: *default
+    database: storage/org_SYfDaOa0u9rHKm6m.sqlite3
+
+  org_97guDBTViEM3UdE1:
+    <<: *default
+    database: storage/org_97guDBTViEM3UdE1.sqlite3
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
