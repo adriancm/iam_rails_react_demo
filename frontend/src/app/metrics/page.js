@@ -1,17 +1,31 @@
 'use client'
 import SymmetricTimeline from "@src/app/components/SymmetricTimeline";
-import { Grid, Button, ButtonGroup } from '@mui/material';
-import {useEffect, useState} from "react";
+import { Grid, Button, ButtonGroup, CircularProgress } from '@mui/material';
+import {useEffect, useRef, useState} from "react";
 import {getAverageMetrics} from "@src/app/metrics/actions";
 import {PER_DAY, PER_MINUTE, TIME_PERIODS} from "@src/app/constants";
+import InfiniteScroll from 'react-infinite-scroller';
 
 const MetricsPage = (props) => {
 
     const [metrics, setMetrics] = useState([]);
     const [timePeriod, setTimePeriod] = useState(PER_MINUTE);
+    const page = useRef(1);
+    const [hasMore, setHasMore] = useState(true);
 
-    const getMetrics = async () => {
-        getAverageMetrics({ timePeriod }).then(setMetrics);
+    const getMetrics = async (nextPage) => {
+        getAverageMetrics({ timePeriod, page: nextPage })
+            .then(
+                items => {
+                    if (items.length > 0) {
+                        setMetrics(
+                            prevItems => nextPage > 1 ? [...prevItems, ...items] : items
+                        )
+                    } else {
+                        setHasMore(false);
+                    }
+                }
+            );
     }
 
     const getTimestamp = (item) => {
@@ -25,7 +39,9 @@ const MetricsPage = (props) => {
     }
 
     useEffect(() => {
-        getMetrics();
+        page.current = 1;
+        setHasMore(true);
+        getMetrics(page.current);
     }, [timePeriod]);
 
     return (
@@ -43,11 +59,19 @@ const MetricsPage = (props) => {
                 </ButtonGroup>
             </Grid>
             <Grid item xs={12}>
-                <SymmetricTimeline
-                    content={item => item.avg}
-                    oppositeContent={getTimestamp}
-                    items={metrics}
-                />
+                <InfiniteScroll
+                    pageStart={1}
+                    loadMore={() => { page.current = page.current + 1; getMetrics(page.current) }}
+                    hasMore={hasMore}
+                    loader={<CircularProgress color="secondary" />}
+                >
+                    <SymmetricTimeline
+                        content={item => item.avg}
+                        oppositeContent={getTimestamp}
+                        items={metrics}
+                    />
+                </InfiniteScroll>
+
             </Grid>
         </Grid>
     );
