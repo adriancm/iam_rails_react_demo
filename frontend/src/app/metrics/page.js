@@ -15,7 +15,7 @@ const MetricsPage = (props) => {
     }
 
     const getTimestamp = (item) => {
-        const date = new Date(item.time_period);
+        const date = new Date(item.period_timestamp);
         return date.toLocaleString('es-ES', {
             hour: '2-digit',
             minute: '2-digit',
