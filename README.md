@@ -22,6 +22,7 @@ docker compose logs -f
 ## Caveats
 
 - I've developed this as quickly as possible; there are probably a few things to improve in terms of quality. Please don't focus too much on this aspect.
+- I've tried here to demonstrate all my capabilities, coding as though this were a larger project. To be clear, I prefer to avoid overengineering.
 - Testing is pending. I would focus on the critical code and main business logic.
 - My main focus has been on Multi-tenant IAM (Organization entity) with a separate database schema for every organization.
 - I did not focus on the UI design.
@@ -48,6 +49,12 @@ to list organizations to dynamically generate database tenants on the backend or
   by provisioning new instances automatically integrated with the Auth0 Admin API.
     + I have experience with it. There are many documents and libraries, and it's easy to integrate.
     + It's highly customizable.
+  
+##### User Authentication Flow
+![User Authentication Flow with Auth0](https://cdn.auth0.com/blog/sso/auth0.png)
+
+##### API Auth Flow
+![API Auth Flow with Auth0](./auth0_access_token.png)
 
 - Why NextJS and not only ReactJS?
   + For security reasons, I prefer NextJS. With Next, we can authenticate 
@@ -61,5 +68,10 @@ to list organizations to dynamically generate database tenants on the backend or
   requires simpler infrastructure, only one instance of the backend needed.
   + For some cases, as mentioned before, replicating infrastructure is better.
 
+- Backend architecture and pattern designs
+  + Within the `app` directory, there is a `domains` path designed to follow Domain-Driven Design principles. 
+  This path is intended for all business logic that does not fit within models, applying the right pattern design for each problem.
+  Models should primarily be reserved for data-related logic and adhere to the principle of single responsibility (SOLID principles).
+  
 For more complex cases, let's talk!
 
