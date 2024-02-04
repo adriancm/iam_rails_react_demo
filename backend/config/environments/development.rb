@@ -56,6 +56,8 @@ Rails.application.configure do
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
 
+  # For docker
+  config.hosts << "backend:3000"
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true

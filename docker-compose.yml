@@ -1,0 +1,19 @@
+services:
+  frontend:
+    build:
+     context: frontend
+     dockerfile: Dockerfile.development
+    ports:
+      - "4000:4000"
+
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile.development
+    ports:
+      - "3000:3000"
+    volumes:
+      - db-data:/rails/storage
+
+volumes:
+  db-data:
